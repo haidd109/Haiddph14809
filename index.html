@@ -1,15 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title> 
-    <link rel="stylesheet" href="./style.css">
-  </head>
-  <body>
-    <ul id="menu"></ul>
-    <div id="app"></div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="max-w-5xl mx-auto">
+    <header>
+      <div class="bg-head py-4">
+        <a href="">
+          <img src="img/Ảnh chụp màn hình 2022-01-14 153709.png" alt="" class="mx-auto">
+        </a>
+      </div>
+      <div class="bg-orange-500">
+        <ul class="flex">
+          <li><a href="/" class="menu-item_link">Trang chủ</a></li>
+          <li>
+            <a href="/about" class="menu-item_link">Tuyển sinh</a>
+          </li>
+          <li>
+            <a href="/product" class="menu-item_link">Chương trình đào tạo</a>
+          </li>
+          <li>
+            <a href="/" class="menu-item_link">Góc sinh viên</a>
+          </li>
+          <li>
+            <a href="" class="menu-item_link">Tuyển dụng</a>
+          </li>
+          <div class="header-search ">
+            <input type="text" name="" id="">
+            <button type="button" class="text-white aspect px-4 py-3 ">Tìm kiếm</button>
+          </div>
+        </ul>
+      </div>
+
+    </header>
+    <main>
+      <div id="app"></div>
+    </main>
+    <footer class="bg-blue-900 text-center py-4">
+      <p class="mb-0 text-white">Copy by Datlt</p>
+    </footer>
+
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+
 </html>
