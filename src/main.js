@@ -1,4 +1,7 @@
 import Navigo from "navigo";
+import Dashboard from "./pages/admin/dashboard";
+import AdminNews from "./pages/admin/news";
+import AdminAddNews from "./pages/admin/news/add";
 import DetailNewsPage from "./pages/detailNews";
 import HomePage from "./pages/home";
 
@@ -21,31 +24,11 @@ router.on({
         console.log(value.data.id);
         print(DetailNewsPage.render(value.data.id));
     },
+    "/admin/dashboard": () => print(Dashboard.render()),
+    "/admin/news": () => print(AdminNews.render()),
+    "/admin/news/add": () => print(AdminAddNews.render()),
 });
 
 router.notFound(() => print("Not Found Page"));
 
 router.resolve();
-
-// class KhuanBanh {
-//     constructor(luongDuong, luongBot) {
-//         this.duong = luongDuong;
-//         this.bot = luongBot;
-//     }
-
-//     showInfo() {
-//         console.log(`
-//             Lượng đường: ${this.duong}
-//             Lượng Bột: ${this.bot}
-//         `);
-//     }
-// }
-
-// const banhDeo = new KhuanBanh(10, 20);
-// banhDeo.showInfo();
-// console.log(banhDeo.duong);
-
-// function sum(a, b) {
-//     return a + b;
-// }
-// sum(3, 4);
