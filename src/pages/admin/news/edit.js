@@ -1,11 +1,10 @@
-import axios from "axios";
-import { add } from "../../../api/post";
+import { get, update } from "../../../api/post";
 import NavAdmin from "../../../components/NavAdmin";
-import $ from 'jquery';
-import validate from 'jquery-validation';
+import axios from 'axios';
 
-const AdminAddNews = {
-  render() {
+const AdminEditNews = {
+  async render(id) {
+      const { data } = await get(id);
     return /*html*/ `
         <div class="min-h-full">
         ${NavAdmin.render()}
@@ -16,7 +15,7 @@ const AdminAddNews = {
               <div class="lg:flex lg:items-center lg:justify-between">
                 <div class="flex-1 min-w-0">
                   <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                    Thêm mới bài viết
+                    Cập nhật bài viết
                   </h2>
                 </div>
                 <div class="mt-5 flex lg:mt-0 lg:ml-4">
@@ -30,27 +29,32 @@ const AdminAddNews = {
                   </a>
                 </div>
               </div>
-      
           </div>
         </header>
         <main>
           <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <!-- Replace with your content -->
-            <form action="" id="form-add">
+            <form action="" id="form-edit">
               <input type="text"
                     id="title-post"
                     class="border border-black"
                     placeholder="Title"
-                    name="title-post"
+                    value="${data.title}"
               > <br />
               <input type="file"
                     id="img-post"
                     class="border border-black"
                     placeholder="Image"
               > <br />
-              <img src="http://2.bp.blogspot.com/-MowVHfLkoZU/VhgIRyPbIoI/AAAAAAAATtI/fHk-j_MYUBs/s640/placeholder-image.jpg" id="img-preview"/>
-              <textarea name="" id="desc-post" cols="30" rows="10" class="border border-black"></textarea><br />
-              <button class="bg-blue-500 p-4 text-white">Thêm</button>
+              <img src="${data.img}" id="img-preview"/>
+              <textarea name="" 
+                id="desc-post" 
+                cols="30" 
+                rows="10" 
+                class="border border-black"
+                value="${data.desc}"
+              ></textarea><br />
+              <button class="bg-blue-500 p-4 text-white">Cập nhật</button>
             </form>
             <!-- /End replace -->
           </div>
@@ -59,43 +63,29 @@ const AdminAddNews = {
         
         `;
   },
-  afterRender() {
-    const formAdd = $("#form-add");
+  afterRender(id) {
+    const formEdit = document.querySelector("#form-edit");
     const imgPost = document.querySelector('#img-post');
     const imgPreview = document.querySelector('#img-preview');
-
+    let imgLink = "";
+    
     const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/ecommercer2021/image/upload"
     const CLOUDINARY_PRESET = "jkbdphzy";
-
-    let imgLink = "";
     
     // preview image when upload
     imgPost.addEventListener('change', async (e) => {
       imgPreview.src = URL.createObjectURL(e.target.files[0]);
     });
 
-    formAdd.validate({
-      rules: {
-        "title-post":{
-					required: true,
-					minlength: 5
-				},
-      },
-      messages: {
-        "title-post": {
-					required: "Không được để trống trường này!",
-					minlength: "Nhập ít nhất 5 ký tự anh ei"
-				},
-      },
-      submitHandler:  function() {
-        async function addProduct(){
-          const file = imgPost.files[0];
-          if(file){
+    formEdit.addEventListener("submit", async(e) => {
+        e.preventDefault();
+        const file = imgPost.files[0];
+        if(file){
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_PRESET);
       
-            // call api cloudinary
+          // call api cloudinary
           
             const { data } = await axios.post(CLOUDINARY_API, formData, {
               headers: {
@@ -103,16 +93,17 @@ const AdminAddNews = {
               }
             });
             imgLink = data.url;
-          }
-          add({
-            title: document.querySelector('#title-post').value,
-            img: imgLink ? imgLink : "",
-            desc:document.querySelector('#desc-post').value,
-          });
         }
-        addProduct();
-      }
+        update({
+            id,
+            title: document.querySelector('#title-post').value,
+            img: imgLink ? imgLink : imgPreview.src,
+            desc:document.querySelector('#desc-post').value,
+        });
+
     });
+
+    
   },
 };
-export default AdminAddNews;
+export default AdminEditNews;
